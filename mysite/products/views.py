@@ -26,6 +26,26 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         serializer.save(des=des)
 
 
+class ProductUpdateAPIView(generics.UpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        if not instance.des:
+            instance.des = instance.title
+
+
+class ProductDestroyAPIView(generics.DestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+
+    def perform_destroy(self, instance):
+        super().perform_destroy(instance)
+
+
 @api_view(['GET', 'POST'])
 def product_list_create(request, pk=None):
     if request.method == "GET":
