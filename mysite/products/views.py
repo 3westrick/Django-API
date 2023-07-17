@@ -1,6 +1,6 @@
 from rest_framework import generics, mixins, permissions
 from .models import Product
-from api.serializers import ProductSerializer
+from .serializers import ProductSerializer
 from api.permissions import IsStaffEditorPermission
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -77,6 +77,8 @@ class ProductListCreateAPIView(StaffEditorPermissionMixin, generics.ListCreateAP
         # serializer.save(user=self.request.user)
         print(serializer)
         print(serializer.validated_data)
+        email = serializer.validated_data.pop('email')
+        print(email)
         title = serializer.validated_data.get('title')
         des = serializer.validated_data.get('des')
         if des is None:
