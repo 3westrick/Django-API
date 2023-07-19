@@ -2,9 +2,11 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 from .models import Product
 from .validators import validate_title, validate_no_hello_allowed, unique_product_title
+from api.serializers import UserPublicSerializer
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    owner = UserPublicSerializer(source="user", read_only=True)
     discount = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(
@@ -26,6 +28,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'discount',
             'url',
             'edit_url',
+            'owner',
             # 'email',
         ]
 
